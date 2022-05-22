@@ -1,6 +1,7 @@
 # The Self Driving project
-Testing control algorithms on a simulated car.  
+A weekend project I took up, trying to test path tracking control algorithms on a simulated car for fun.  
 Readability is valued over efficiency.  
+MPC and tests coming next week!  
 
 ## Examples
 
@@ -12,5 +13,5 @@ Readability is valued over efficiency.
 
 ## Deps
 - Pygame == 1.9.6
-- Numpy == 1.22.3
+- Numpy == 1.22.3  
 (may work on other versions)
