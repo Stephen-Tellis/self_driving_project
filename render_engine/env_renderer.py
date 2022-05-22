@@ -1,4 +1,5 @@
 # Local, Self made classes
+from logger.logger_config import setup_logger
 
 # Python Libs
 import math
@@ -6,8 +7,8 @@ import math
 # Installed Libs
 import pygame
 
-# Util Functions
-
+# Setup Logging
+logger = setup_logger(__name__)
 
 def scale_image(img, factor):
     size = round(img.get_width() * factor), round(img.get_height() * factor)
@@ -109,7 +110,7 @@ class RenderEnvironment:
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
-                print("Got kill event")
+                logger.info("Got kill event")
                 return False
 
         self._render_resources()

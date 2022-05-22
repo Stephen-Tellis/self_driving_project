@@ -5,6 +5,10 @@ Inspired by: (https://www.ri.cmu.edu/pub_files/2009/2/Automatic_Steering_Methods
 
 import math
 
+from logger.logger_config import setup_logger
+
+# Setup Logging
+logger = setup_logger(__name__)
 
 class SteeringControl:
 
@@ -30,5 +34,5 @@ class SteeringControl:
                            self.state.rear_x) - self.state.yaw
 
         delta = math.atan2(2.0 * self.state.wb * math.sin(alpha) / Lf, 1.0)
-
+        logger.debug(f"{alpha=},{delta=}")
         return delta, ind

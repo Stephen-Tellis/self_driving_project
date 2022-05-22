@@ -18,6 +18,7 @@
 from render_engine.env_renderer import RenderEnvironment, Resources
 from path_planning import cubic_spline_planner
 from vehicle_models.bicycle_model import AbstractCar
+from logger.logger_config import setup_logger
 
 # Python Libs
 import json
@@ -39,6 +40,9 @@ V_MAX = 50  # [px/s]
 CAR_MODEL = Resources.RED_CAR  # Available are red and green
 PATH_FILE = "path_planning/saved_path.txt"
 
+# Setup Logging
+logger = setup_logger(__name__)
+
 # Custom imports based on settings
 if CONTROLLER == "pure pursuit":
     from control.proportional_control import LongitudionalControl
@@ -59,7 +63,7 @@ class PlayerCar(AbstractCar):
 
 class TargetCourse:
     """
-    Navigates through waypoints in the true path to find the next closest path for the controller.
+    Navigates through waypoints in the true path to find the next closest point for the controller.
     """
 
     def __init__(self, cx, cy):
@@ -147,7 +151,7 @@ def main():
         else:
             if not lastIndex > target_ind:
                 run = False
-                print("End of path reached")
+                logger.info("End of planned path reached")
                 break
             ai = p_control.control(V_MAX, state.v)
             di, target_ind = steering_control.control(
@@ -163,7 +167,7 @@ def main():
     if TEACH:
         with open(PATH_FILE, "w") as f:
             json.dump(path_taught, f)
-            print(path_taught)
+            logger.debug(path_taught)
 
 
 if __name__ == "__main__":
