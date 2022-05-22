@@ -26,7 +26,7 @@ import json
 # Installed Libs
 
 # All settings go here (Controller gains are in their respective classes)
-CONTROLLER = "pure pursuit"
+CONTROLLER = "stanley"
 TEACH = False
 SHOW_TRUE_PATH = False  # Not relevant in teach mode, for debug
 FPS = 20
