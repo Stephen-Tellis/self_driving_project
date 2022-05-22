@@ -26,8 +26,3 @@ class AbstractCar:
         self.v += a * self.dt
         self.rear_x = int(self.x - ((self.wb) * math.cos(self.yaw)))
         self.rear_y = int(self.y - ((self.wb) * math.sin(self.yaw)))
-
-    def calc_distance(self, point_x, point_y):
-        dx = self.rear_x - point_x
-        dy = self.rear_y - point_y
-        return math.hypot(dx, dy)

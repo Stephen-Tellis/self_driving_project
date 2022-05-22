@@ -2,37 +2,48 @@
 Inspired by: (https://www.ri.cmu.edu/pub_files/2009/2/Automatic_Steering_Methods_for_Autonomous_Automobile_Path_Tracking.pdf)
            : Atsushi Sakai (@Atsushi_twi)
 """
-
-import math
-
+# Local and Self made classes
+from control.control_util import TargetCourse
 from logger.logger_config import setup_logger
+
+# Python Libs
+import math
 
 # Setup Logging
 logger = setup_logger(__name__)
 
+# Controller Gains
+K = 0.1  # Look forward gain
+LFC = 45  # Look forward distances in px
+
+
 class SteeringControl:
 
-    def __init__(self, state, trajectory) -> None:
-        self.state = state
-        self.trajectory = trajectory
+    def __init__(self, cx, cy, wb, cyaw):
+        logger.info("Pure Pursuit Controller")
+        self.trajectory = TargetCourse(cx, cy, K, LFC)
 
-    def control(self, pind):
-        ind, Lf = self.trajectory.search_target_index(self.state)
+    def search_target_index(self, rear_x, rear_y, yaw, v):
+        return self.trajectory._search_target_index(rear_x, rear_y, v)
 
-        if pind >= ind:
-            ind = pind
+    def control(self, prev_ind, rear_x, rear_y, yaw, v, wb):
+        current_idx, Lf = self.trajectory._search_target_index(
+            rear_x, rear_y, v)
 
-        if ind < len(self.trajectory.cx):
-            tx = self.trajectory.cx[ind]
-            ty = self.trajectory.cy[ind]
+        if prev_ind >= current_idx:
+            current_idx = prev_ind
+
+        if current_idx < len(self.trajectory.cx):
+            tx = self.trajectory.cx[current_idx]
+            ty = self.trajectory.cy[current_idx]
         else:  # toward goal
             tx = self.trajectory.cx[-1]
             ty = self.trajectory.cy[-1]
-            ind = len(self.trajectory.cx) - 1
+            current_idx = len(self.trajectory.cx) - 1
 
-        alpha = math.atan2(ty - self.state.rear_y, tx -
-                           self.state.rear_x) - self.state.yaw
+        alpha = math.atan2(ty - rear_y, tx -
+                           rear_x) - yaw
 
-        delta = math.atan2(2.0 * self.state.wb * math.sin(alpha) / Lf, 1.0)
+        delta = math.atan2(2.0 * wb * math.sin(alpha) / Lf, 1.0)
         logger.debug(f"{alpha=},{delta=}")
-        return delta, ind
+        return delta, current_idx

@@ -3,8 +3,9 @@ Self-driving algorithms on a simulated car.
 Readability is valued over efficiency.  
 
 ## Deps
-- Pygame
-- Numpy
+- Pygame == 1.9.6
+- Numpy == 1.22.3
+(may work on older versions)
 
 ## Examples
 
