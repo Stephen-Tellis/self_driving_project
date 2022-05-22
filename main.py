@@ -28,7 +28,7 @@ import numpy as np
 # All settings go here
 CONTROLLER = "pure pursuit"
 TEACH = False
-SHOW_TRUE_PATH = True  # Not relevant in teach mode
+SHOW_TRUE_PATH = False  # Not relevant in teach mode
 FPS = 10
 k = 0.1  # look forward gain
 Lfc = 45  # [px] look-ahead distance
@@ -119,8 +119,6 @@ def main():
     env_images = [(Resources.GRASS, (0, 0)), (Resources.TRACK, (0, 0)),
                   (Resources.FINISH, (130, 250)), (Resources.TRACK_BORDER, (0, 0))]
 
-    # Initialize start time
-    clock = window.setup_clock()
 
     # Instantiate render engine, vehicle and controllers
     window = RenderEnvironment(
@@ -132,6 +130,9 @@ def main():
         target_ind, _ = target_course.search_target_index(state)
         p_control = LongitudionalControl(Kp)
         steering_control = SteeringControl(state, target_course)
+
+    # Initialize start time
+    clock = window.setup_clock()
 
     run = True
 

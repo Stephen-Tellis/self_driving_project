@@ -59,7 +59,7 @@ class RenderEnvironment:
         pygame.init()
         self.win = pygame.display.set_mode((Settings.WIDTH, Settings.HEIGHT))
         pygame.display.set_caption(
-            f"Self driving with {control_type} controller")
+            f"Self driving with the {control_type} controller")
         self.car_img = car_img
         self.images = images
         self.TEACH_MODE = teach_mode
