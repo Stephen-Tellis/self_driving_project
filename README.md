@@ -1,13 +1,13 @@
 # The Self Driving project
-Self-driving algorithms on a simulated car.  
+Testing control algorithms on a simulated car.  
 Readability is valued over efficiency.  
 
 ## Examples
 
-### 1. Self Driving with the Pure-Pursuit controller
+### 1. Driving with the Pure-Pursuit controller
 ![](demo/pure_pursuit.gif)  
 
-### 2. Self Driving with the Stanley controller
+### 2. Driving with the Stanley controller
 ![](demo/stanley.gif)  
 
 ## Deps
