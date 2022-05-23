@@ -1,5 +1,5 @@
 # The Self Driving project
-A weekend project I took up, trying to test path tracking control algorithms on a simulated car for fun.  
+A weekend project I took up, trying to test path tracking control algorithms on a simulated car.  
 Readability is valued over efficiency.  
 MPC and tests coming next week!  
 

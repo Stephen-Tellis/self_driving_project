@@ -30,7 +30,7 @@ import json
 # Vehicle dimensions in the rendering engine
 CONTROLLER = "pure pursuit"
 TEACH = False
-SHOW_TRUE_PATH = True  # Not relevant in teach mode, for debug
+SHOW_TRUE_PATH = False  # Debug
 FPS = 20
 DT = 1/FPS  # time tick
 WB = Settings.WB  # [px] wheel base of vehicle
