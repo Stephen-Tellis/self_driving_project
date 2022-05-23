@@ -5,6 +5,7 @@ Inspired by: (https://www.ri.cmu.edu/pub_files/2009/2/Automatic_Steering_Methods
 # Local and Self made classes
 from control.control_util import TargetCourse
 from logger.logger_config import setup_logger
+from render_engine.env_renderer import Settings
 
 # Python Libs
 import math
@@ -23,10 +24,12 @@ class SteeringControl:
         logger.info("Pure Pursuit Controller")
         self.trajectory = TargetCourse(cx, cy, K, LFC)
 
-    def search_target_index(self, rear_x, rear_y, yaw, v):
-        return self.trajectory._search_target_index(rear_x, rear_y, v)
+    def search_target_index(self, x, y, yaw, v):
+        return self.trajectory._search_target_index(x, y, v)
 
-    def control(self, prev_ind, rear_x, rear_y, yaw, v, wb):
+    def control(self, prev_ind, x, y, yaw, v, wb):
+        rear_x = int(x - ((Settings.WB) * math.cos(yaw)))
+        rear_y = int(y - ((Settings.WB) * math.sin(yaw)))
         current_idx, Lf = self.trajectory._search_target_index(
             rear_x, rear_y, v)
 

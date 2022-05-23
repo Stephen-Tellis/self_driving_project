@@ -15,7 +15,7 @@
 #
 
 # Local and Self made classes
-from render_engine.env_renderer import RenderEnvironment, Resources
+from render_engine.env_renderer import RenderEnvironment, Resources, Settings
 from path_planning import cubic_spline_planner
 from vehicle_models.bicycle_model import AbstractCar
 from logger.logger_config import setup_logger
@@ -25,13 +25,15 @@ import json
 
 # Installed Libs
 
-# All settings go here (Controller gains are in their respective classes)
-CONTROLLER = "stanley"
+# All settings go here 
+# Controller gains are in their respective classes 
+# Vehicle dimensions in the rendering engine
+CONTROLLER = "pure pursuit"
 TEACH = False
-SHOW_TRUE_PATH = False  # Not relevant in teach mode, for debug
+SHOW_TRUE_PATH = True  # Not relevant in teach mode, for debug
 FPS = 20
 DT = 1/FPS  # time tick
-WB = 26  # [px] wheel base of vehicle
+WB = Settings.WB  # [px] wheel base of vehicle
 V_MAX = 50  # [px/s]
 CAR_MODEL = Resources.GREEN_CAR  # Available are red and green
 PATH_FILE = "path_planning/saved_path.txt"
@@ -87,7 +89,7 @@ def main():
         p_control = LongitudionalControl()
         steering_control = SteeringControl(cx, cy, WB, cyaw)
         target_ind, _ = steering_control.search_target_index(
-            state.rear_x, state.rear_y, state.yaw, state.v)
+            state.x, state.y, state.yaw, state.v)
 
     # Initialize start time
     clock = window.setup_clock()
@@ -109,7 +111,7 @@ def main():
                 break
             ai = p_control.control(V_MAX, state.v)
             di, target_ind = steering_control.control(
-                target_ind, state.rear_x, state.rear_y,
+                target_ind, state.x, state.y,
                 state.yaw, state.v, state.wb)
             state.update(ai, di)  # Control car
 

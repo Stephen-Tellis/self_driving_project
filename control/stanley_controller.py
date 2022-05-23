@@ -15,7 +15,7 @@ import numpy as np
 logger = setup_logger(__name__)
 
 # Controller Gains
-K = 1
+K = 2
 
 
 class SteeringControl:
@@ -42,12 +42,12 @@ class SteeringControl:
 
         return angle
 
-    def search_target_index(self, rear_x, rear_y, yaw, v):
-        return self._calc_target_index(rear_x, rear_y, yaw)
+    def search_target_index(self, x, y, yaw, v):
+        return self._calc_target_index(x, y, yaw)
 
-    def control(self, prev_ind, rear_x, rear_y, yaw, v, wb):
+    def control(self, prev_ind, x, y, yaw, v, wb):
         current_idx, error_front_axle = self._calc_target_index(
-            rear_x, rear_y, yaw)
+            x, y, yaw)
 
         if prev_ind >= current_idx:
             current_idx = prev_ind
@@ -62,15 +62,11 @@ class SteeringControl:
         logger.debug(f"{delta}, {theta_e}, {theta_d}")
         return delta, current_idx
 
-    def _calc_target_index(self, rear_x, rear_y, yaw):
-
-        # Calc front axle position
-        fx = rear_x + self.wb * np.cos(yaw)
-        fy = rear_y + self.wb * np.sin(yaw)
+    def _calc_target_index(self, x, y, yaw):
 
         # Search nearest point index
-        dx = [fx - icx for icx in self.cx]
-        dy = [fy - icy for icy in self.cy]
+        dx = [x - icx for icx in self.cx]
+        dy = [y - icy for icy in self.cy]
         d = np.hypot(dx, dy)
         target_idx = np.argmin(d)
 

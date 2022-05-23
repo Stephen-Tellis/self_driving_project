@@ -53,7 +53,7 @@ class Settings:
     CAR_X_OFFSET = Resources.RED_CAR.get_width()/2
     # [px] between front axle
     CAR_Y_OFFSET = Resources.RED_CAR.get_height()*0.25
-
+    WB = Resources.RED_CAR.get_height()*0.65
 
 class RenderEnvironment:
     def __init__(self, control_type, images, car_img, teach_mode, render_true_path, true_path=None):
@@ -124,7 +124,18 @@ class RenderEnvironment:
         return True
 
     def draw_car(self, car_x, car_y, car_yaw):
-        top_left = (car_x - Settings.CAR_X_OFFSET,
-                    car_y - Settings.CAR_Y_OFFSET)
-        blit_rotate_center(
-            self.win, self.car_img, top_left, car_yaw)
+        """
+        Red point represents front axle centre
+        Blue point represents rear axle centre
+        Renders car
+        """
+        rear_x = int(car_x - ((Settings.WB) * math.cos(car_yaw)))
+        rear_y = int(car_y - ((Settings.WB) * math.sin(car_yaw)))
+        angle = -(car_yaw*180)/math.pi-90
+        player_image = pygame.transform.rotate(self.car_img, angle)
+        player_rect = player_image.get_rect()
+        player_rect.center = ((car_x+rear_x)//2,(car_y+rear_y)//2)
+        self.win.blit(player_image, player_rect)
+        pygame.draw.circle(self.win, (0, 0, 255), (rear_x,rear_y), 2)
+        pygame.draw.circle(self.win, (255, 0, 0), (car_x, car_y), 2)
+
